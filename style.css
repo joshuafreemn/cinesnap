@@ -1,0 +1,1811 @@
+/* CineSnap - Adobe CS3 Retro Professional Styling */
+
+/* --- Adobe Creative Suite 3 Theme Variables --- */
+:root {
+  --bg-deep: #161616;          /* Dark viewport background */
+  --bg-panel: #2e2e2e;         /* Standard panel background */
+  --bg-header: #242424;        /* Dark panel headers */
+  --bg-widget: #3d3d3d;        /* Solid gray buttons */
+  --bg-widget-hover: #4a4a4a;  /* Hover button color */
+  --bg-widget-active: #1f1f1f; /* Inset button state */
+  
+  --accent: #3882f6;           /* CS3 Slate/Classic blue selection */
+  --accent-hover: #5093ff;
+  --accent-rgb: 56, 130, 246;
+  
+  --accent-orange: #c77413;    /* Highlight/Alert/Capture orange */
+  --accent-orange-hover: #e58a20;
+  
+  --text-primary: #d5d5d5;     /* Flat light gray text */
+  --text-secondary: #9a9a9a;   /* Muted labels */
+  --text-muted: #666666;
+  
+  --border-dark: #121212;      /* Primary separator */
+  --border-light: #444444;     /* Inner bevel/edge highlight */
+  --border-color: #1a1a1a;
+  
+  --success: #288f54;
+  --danger: #ac2c2c;
+  
+  --font-sans: 'Tahoma', 'Segoe UI', 'Arial', sans-serif;
+  --font-mono: 'Courier New', 'JetBrains Mono', monospace;
+  
+  --radius-sm: 0px;            /* ABSOLUTE FLAT CORNERS - CS3 STYLE */
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  
+  --shadow-lg: none;           /* NO MODERN GLOWS OR SOFT DROP SHADOWS */
+  --shadow-inset: inset 1px 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* --- Global Reset & Base (High Density) --- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border-radius: 0 !important; /* Force sharp corners on everything */
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 11px; /* Small, dense text like old editing software */
+  background-color: var(--bg-deep);
+  color: var(--text-primary);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- Utilities --- */
+.hidden {
+  display: none !important;
+}
+
+.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* --- Retro Scrollbars --- */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  background: #252525;
+  border-left: 1px solid #1a1a1a;
+}
+::-webkit-scrollbar-thumb {
+  background: #3e3e3e;
+  border: 1px solid #1a1a1a;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.05);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #4a4a4a;
+}
+::-webkit-scrollbar-button {
+  display: none;
+}
+
+/* --- Adobe Style Buttons & Inputs --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 3px 8px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  color: var(--text-primary);
+  background: linear-gradient(to bottom, #444444, #323232);
+  border: 1px solid var(--border-dark);
+  border-top-color: #555555;
+  cursor: pointer;
+  user-select: none;
+  height: 20px;
+}
+
+.btn:hover {
+  background: #4a4a4a;
+  color: #fff;
+  border-color: #0c0c0c;
+}
+
+.btn:active {
+  background: var(--bg-widget-active);
+  box-shadow: var(--shadow-inset);
+  border-top-color: #121212;
+}
+
+.btn-primary {
+  background: linear-gradient(to bottom, #505050, #383838);
+  border-top-color: #666;
+}
+
+.btn-success {
+  color: #fff;
+  background: linear-gradient(to bottom, #348f58, #225e39);
+  border-top-color: #4dae75;
+}
+.btn-success:hover {
+  background: #2b784a;
+}
+
+.btn-danger {
+  color: #fff;
+  background: linear-gradient(to bottom, #ba3535, #7d2020);
+  border-top-color: #df5858;
+}
+.btn-danger:hover {
+  background: #a02828;
+}
+
+.btn-sm {
+  padding: 1px 6px;
+  font-size: 10px;
+  height: 18px;
+}
+
+/* Highlight Orange Capture Button - Classic CS3 alert/accent */
+.btn-capture {
+  background: linear-gradient(to bottom, var(--accent-orange), #8a4e0a);
+  border: 1px solid var(--border-dark);
+  border-top-color: #df8a28;
+  color: #ffffff;
+  font-weight: bold;
+  height: 24px;
+  padding: 4px 14px;
+}
+
+.btn-capture:hover {
+  background: var(--accent-orange-hover);
+  border-color: #000;
+}
+
+.btn-capture:active {
+  background: #6b3a04;
+  box-shadow: var(--shadow-inset);
+}
+
+/* Form Dropdowns & text fields */
+.select-input {
+  background-color: #1a1a1a;
+  border: 1px solid var(--border-dark);
+  border-top-color: #0b0b0b;
+  color: var(--text-primary);
+  padding: 2px 4px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  height: 20px;
+  outline: none;
+  color-scheme: dark;
+}
+
+.select-input:focus {
+  border-color: var(--accent);
+}
+
+.select-sm {
+  padding: 1px 2px;
+  font-size: 10px;
+  height: 18px;
+}
+
+.badge {
+  background-color: #1c1c1c;
+  color: #ccc;
+  font-size: 9px;
+  font-family: var(--font-mono);
+  padding: 1px 4px;
+  border: 1px solid #333;
+}
+
+.badge-outline {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: transparent;
+}
+
+/* --- App Header (Solid Tool Strip) --- */
+.app-header {
+  height: 32px; /* Very narrow header for high utility */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  background-color: var(--bg-header);
+  border-bottom: 1px solid var(--border-dark);
+  z-index: 10;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-primary);
+}
+
+.logo-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--text-secondary);
+}
+
+.logo h1 {
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.app-tagline {
+  font-size: 10px;
+  color: var(--text-muted);
+  border-left: 1px solid #3c3c3c;
+  padding-left: 10px;
+  margin-top: 0px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hidden-input {
+  display: none;
+}
+
+/* --- Resizers (Adobe style flat gutters with grab icons) --- */
+.resizer {
+  background-color: #252525;
+  border: 1px solid var(--border-dark);
+  position: relative;
+  z-index: 50;
+  user-select: none;
+}
+
+.resizer:hover, .resizer.dragging {
+  background-color: #444;
+}
+
+.resizer-y {
+  height: 5px;
+  width: 100%;
+  cursor: row-resize;
+  border-left: none;
+  border-right: none;
+  /* Simple grab pattern indicator */
+  background-image: radial-gradient(circle, #555 1px, transparent 1px);
+  background-size: 4px 4px;
+  background-position: center center;
+  background-repeat: repeat-x;
+}
+
+.resizer-x {
+  width: 5px;
+  height: 100%;
+  cursor: col-resize;
+  border-top: none;
+  border-bottom: none;
+  background-image: radial-gradient(circle, #555 1px, transparent 1px);
+  background-size: 4px 4px;
+  background-position: center center;
+  background-repeat: repeat-y;
+}
+
+/* --- Main Layout Container --- */
+.app-container {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* --- Top Section: Film Scene & Shot Overview Panel --- */
+.overview-panel {
+  background-color: var(--bg-panel);
+  border-bottom: 1px solid var(--border-dark);
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 160px; /* Highly compact default */
+  min-height: 100px;
+  max-height: 50vh;
+  flex-shrink: 0;
+}
+
+.overview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  border-bottom: 1px solid #202020;
+  padding-bottom: 4px;
+}
+
+.overview-title-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.overview-icon {
+  width: 12px;
+  height: 12px;
+  color: var(--text-secondary);
+}
+
+.overview-header h2 {
+  font-size: 11px;
+  font-weight: bold;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.scanner-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.scan-progress-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 100px;
+}
+
+.progress-track {
+  flex: 1;
+  height: 4px;
+  background-color: #1a1a1a;
+  border: 1px solid #101010;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: var(--accent);
+}
+
+.scan-percent {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-primary);
+  min-width: 24px;
+  text-align: right;
+}
+
+/* Tab Navigation (Flat, sharp tabs continuous with panel border) */
+.overview-nav {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.tab-btn {
+  background: #252525;
+  border: 1px solid #1a1a1a;
+  border-bottom: none;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: normal;
+  padding: 2px 10px;
+  cursor: pointer;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 18px;
+  margin-right: 2px;
+}
+
+.tab-btn i {
+  width: 10px;
+  height: 10px;
+}
+
+.tab-btn:hover {
+  color: #fff;
+  background: #2a2a2a;
+}
+
+.tab-btn.active {
+  color: #fff;
+  background-color: var(--bg-panel);
+  font-weight: bold;
+  border-bottom: 1px solid var(--bg-panel); /* Mask the bottom line */
+  top: 1px; /* Overlap border */
+  z-index: 2;
+}
+
+.btn-back-scenes {
+  margin-left: auto;
+  background: #252525;
+  border: 1px solid #1a1a1a;
+  color: var(--text-secondary);
+  padding: 1px 6px;
+  font-size: 10px;
+  height: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-back-scenes:hover {
+  color: #fff;
+  background-color: #353535;
+}
+
+/* Overview Contents Scrollbox */
+.overview-content {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.overview-empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-muted);
+  font-size: 10px;
+  text-align: center;
+}
+
+/* Grid Layouts (Max Density) */
+.scenes-grid, .shots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px;
+  padding: 2px 0;
+}
+
+/* Scene item card (Adobe style box) */
+.scene-card {
+  background-color: #252525;
+  border: 1px solid #1a1a1a;
+  cursor: pointer;
+  transition: none; /* Instant hover, no transitions */
+}
+
+.scene-card:hover {
+  border-color: var(--accent);
+  background-color: #2b2b2b;
+}
+
+.scene-card-thumb {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background-color: #000;
+  overflow: hidden;
+  position: relative;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.scene-card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.scene-card-duration {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  background: rgba(0, 0, 0, 0.8);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  padding: 0px 3px;
+  border: 1px solid #333;
+}
+
+.scene-card-info {
+  padding: 4px;
+}
+
+.scene-card-title {
+  font-size: 10px;
+  font-weight: bold;
+  margin-bottom: 1px;
+  color: #eee;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scene-card-subtext {
+  font-size: 9px;
+  color: var(--text-secondary);
+}
+
+/* Shot Card representation */
+.shot-card {
+  background-color: #252525;
+  border: 1px solid #1a1a1a;
+  cursor: pointer;
+}
+
+.shot-card:hover {
+  border-color: var(--accent);
+}
+
+.shot-card-thumb {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background-color: #000;
+  overflow: hidden;
+  position: relative;
+}
+
+.shot-card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.shot-card-time {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  background: rgba(0, 0, 0, 0.8);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  padding: 0px 3px;
+  border: 1px solid #333;
+  color: #eee;
+}
+
+/* --- Left Column: Workspace Panel --- */
+.workspace-panel {
+  flex: 1;
+  min-width: 300px;
+  display: grid;
+  grid-template-rows: 1fr auto auto;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-deep);
+}
+
+/* --- Film Dropzone / Viewport --- */
+.viewport-wrapper {
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background-color: #0a0a0a;
+  padding: 8px; /* Compact padding */
+}
+
+/* Video container */
+.video-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #000;
+  border: 1px solid #202020;
+}
+
+.video-container video {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transform-origin: center center;
+}
+
+/* Zoom Overlay HUD (Beveled slate card) */
+.zoom-indicator {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #252528;
+  border: 1px solid #444;
+  padding: 3px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  pointer-events: none;
+}
+
+.zoom-indicator span:first-child {
+  font-size: 10px;
+  font-weight: bold;
+  color: var(--accent);
+}
+
+.zoom-indicator .pan-tip {
+  font-size: 9px;
+  color: var(--text-secondary);
+}
+
+/* Spinner Overlay */
+.video-loading-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  z-index: 5;
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #333;
+  border-top-color: var(--accent);
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Drag placeholder */
+.placeholder-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-width: 500px;
+  padding: 30px;
+  border: 1px dashed #444;
+  background-color: var(--bg-panel);
+}
+
+.placeholder-overlay.dragover {
+  border-color: var(--accent);
+  background-color: #252525;
+}
+
+.placeholder-icon {
+  width: 32px;
+  height: 32px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.placeholder-overlay h2 {
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: #fff;
+}
+
+.placeholder-overlay p {
+  color: var(--text-secondary);
+  font-size: 11px;
+  margin-bottom: 16px;
+}
+
+.compatibility-info {
+  border-top: 1px solid #202020;
+  padding-top: 16px;
+  width: 100%;
+}
+
+.compatibility-info span {
+  font-size: 10px;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.remux-hint {
+  background-color: #1a1a1a;
+  border: 1px solid #101010;
+  padding: 8px;
+  position: relative;
+  text-align: left;
+}
+
+.remux-hint span {
+  font-size: 9px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.remux-hint code {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #e59020;
+  word-break: break-all;
+  display: block;
+  padding-right: 24px;
+}
+
+.btn-copy {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 2px;
+}
+
+.btn-copy:hover {
+  color: #fff;
+  background: #333;
+}
+
+.copy-icon {
+  width: 12px;
+  height: 12px;
+}
+
+/* --- Video Controls Panel (Tool dock) --- */
+.controls-panel {
+  grid-row: 2;
+  background-color: var(--bg-panel);
+  border-top: 1px solid var(--border-dark);
+  padding: 8px 12px;
+}
+
+.scrubber-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.time-display {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #fff;
+  background-color: #181818;
+  padding: 2px 6px;
+  border: 1px solid #101010;
+  min-width: 82px;
+  text-align: center;
+  box-shadow: var(--shadow-inset);
+}
+
+.slider-wrapper {
+  position: relative;
+  flex: 1;
+  height: 12px; /* Thick track for CS3 scrubbing */
+  display: flex;
+  align-items: center;
+  background: #141414;
+  border: 1px solid #0f0f0f;
+  box-shadow: var(--shadow-inset);
+}
+
+.slider-wrapper input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+}
+
+.progress-bar-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background-color: #3b3b3b; /* Gray scrubber fill */
+  pointer-events: none;
+  z-index: 1;
+  border-right: 1px solid #555;
+}
+
+/* CS3 range slider thumb - classic blue block pointer */
+.slider-wrapper input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 8px;
+  height: 12px;
+  background: var(--accent);
+  border: 1px solid #000;
+  cursor: pointer;
+  opacity: 1;
+}
+
+.controls-buttons-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.controls-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.control-widget {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.widget-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  font-weight: bold;
+}
+
+.main-playback-controls {
+  gap: 2px;
+}
+
+/* Flat grey tool buttons */
+.control-btn {
+  background: linear-gradient(to bottom, #444, #323232);
+  border: 1px solid var(--border-dark);
+  border-top-color: #555;
+  color: var(--text-primary);
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.control-btn i {
+  width: 12px;
+  height: 12px;
+}
+
+.control-btn:hover {
+  background: #4a4a4a;
+  color: #fff;
+  border-color: #000;
+}
+
+.control-btn:active {
+  background: #1f1f1f;
+  box-shadow: var(--shadow-inset);
+  border-top-color: #121212;
+}
+
+.btn-subtext {
+  font-size: 7px;
+  font-weight: bold;
+  margin-top: 1px;
+  color: var(--text-secondary);
+}
+
+.play-pause-btn {
+  background: linear-gradient(to bottom, #484848, #353535);
+  border-top-color: #606060;
+  width: 32px;
+  height: 32px;
+}
+.play-pause-btn:hover {
+  background: #505050;
+  transform: none;
+  box-shadow: none;
+}
+.play-pause-btn:active {
+  background: #202020;
+}
+.play-pause-btn i {
+  width: 14px;
+  height: 14px;
+}
+
+/* --- Adjacent Frame Explorer (Filmstrip panel) --- */
+.adjacent-frames-panel {
+  grid-row: 3;
+  background-color: var(--bg-panel);
+  border-top: 1px solid var(--border-dark);
+  padding: 8px 12px;
+  overflow: hidden;
+}
+
+.panel-header {
+  margin-bottom: 6px;
+}
+
+.panel-header h3 {
+  font-size: 11px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.panel-subtitle {
+  font-size: 9px;
+  color: var(--text-secondary);
+}
+
+.frames-strip {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  width: 100%;
+}
+
+.frame-strip-card {
+  background-color: #252525;
+  border: 1px solid #1a1a1a;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.frame-strip-card:hover {
+  border-color: var(--text-secondary);
+  transform: none;
+}
+
+.frame-strip-card.current {
+  border-color: var(--accent);
+  background-color: #2b2b2e;
+}
+
+.frame-strip-thumb {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background-color: #000;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.frame-strip-thumb canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.frame-offset-badge {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  background: rgba(0, 0, 0, 0.8);
+  font-size: 8px;
+  font-family: var(--font-mono);
+  padding: 0px 3px;
+  color: var(--text-secondary);
+  border: 1px solid #333;
+}
+
+.frame-strip-card.current .frame-offset-badge {
+  background-color: var(--accent);
+  color: #fff;
+  border-color: #0c0c0c;
+}
+
+.frame-strip-time {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 2px;
+}
+
+/* --- Right Column: Gallery Sidebar Panel --- */
+.gallery-panel {
+  width: 280px; /* Highly compact CS3 sidebar */
+  min-width: 200px;
+  max-width: 500px;
+  flex-shrink: 0;
+  background-color: var(--bg-panel);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border-left: 1px solid var(--border-dark);
+}
+
+.gallery-header {
+  padding: 8px 12px;
+  background-color: var(--bg-header);
+  border-bottom: 1px solid var(--border-dark);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 28px;
+}
+
+.gallery-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gallery-icon {
+  width: 12px;
+  height: 12px;
+  color: var(--text-secondary);
+}
+
+.gallery-header h2 {
+  font-size: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.gallery-items {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #1e1e1e; /* Darker inset panel for screenshots */
+}
+
+/* Empty View */
+.gallery-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px 10px;
+  height: 80%;
+  color: var(--text-muted);
+}
+
+.empty-icon {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 8px;
+}
+
+.gallery-empty-state p {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.empty-subtext {
+  font-size: 9px;
+  line-height: 1.3;
+}
+
+/* Gallery Item Box */
+.gallery-card {
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border-dark);
+  box-shadow: none;
+}
+
+.gallery-card:hover {
+  border-color: #444;
+}
+
+.gallery-card-thumb {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background-color: #000;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border-dark);
+}
+
+.gallery-card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery-card-meta {
+  position: absolute;
+  bottom: 0;
+  inset-x: 0;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 2px 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #1a1a1a;
+}
+
+.gallery-card-time {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #fff;
+}
+
+.gallery-card-res {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--text-secondary);
+}
+
+.gallery-card-info {
+  padding: 6px;
+}
+
+/* Inset Text Fields */
+.gallery-card-title-input {
+  width: 100%;
+  background-color: #121212;
+  border: 1px solid #000;
+  border-top-color: #050505;
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  padding: 3px 6px;
+  outline: none;
+  margin-bottom: 6px;
+  box-shadow: var(--shadow-inset);
+}
+
+.gallery-card-title-input:focus {
+  border-color: var(--accent);
+}
+
+.gallery-card-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.gallery-card-actions .btn {
+  flex: 1;
+  padding: 2px 4px;
+  font-size: 9px;
+  height: 18px;
+}
+
+/* --- Keyboard Shortcuts Dialog (Retro Dialog Window) --- */
+.modal-dialog {
+  border: none;
+  background: transparent;
+  margin: auto;
+  max-width: 500px;
+  width: 90%;
+  outline: none;
+}
+
+.modal-dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.modal-content {
+  background-color: var(--bg-panel);
+  border: 2px solid #444;
+  outline: 1px solid #000;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+  overflow: hidden;
+}
+
+.modal-header {
+  padding: 6px 12px;
+  background-color: var(--bg-header);
+  border-bottom: 1px solid var(--border-dark);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 24px;
+}
+
+.modal-header h2 {
+  font-size: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.modal-close:hover {
+  color: #fff;
+}
+
+.modal-body {
+  padding: 12px;
+  max-height: 350px;
+  overflow-y: auto;
+  background-color: #242424;
+}
+
+.shortcuts-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.shortcut-section h3 {
+  font-size: 9px;
+  text-transform: uppercase;
+  color: var(--accent-orange-hover);
+  margin-bottom: 6px;
+  font-weight: bold;
+  border-bottom: 1px solid #333;
+  padding-bottom: 2px;
+}
+
+.shortcut-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+  border-bottom: 1px solid #222;
+}
+
+.shortcut-keys {
+  display: flex;
+  gap: 2px;
+}
+
+/* Slate keycaps */
+kbd {
+  background-color: #333;
+  border: 1px solid #1a1a1a;
+  border-bottom-color: #0a0a0a;
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  padding: 1px 4px;
+  display: inline-block;
+  min-width: 18px;
+  text-align: center;
+}
+
+.shortcut-desc {
+  font-size: 10px;
+  color: var(--text-primary);
+}
+
+.modal-footer {
+  padding: 8px 12px;
+  border-top: 1px solid var(--border-dark);
+  display: flex;
+  justify-content: flex-end;
+  background-color: var(--bg-panel);
+}
+
+/* --- Toast Toast Window --- */
+.toast {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #282828;
+  border: 1px solid var(--success);
+  outline: 1px solid #121212;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  z-index: 99;
+  animation: slideUp 0.15s ease-out;
+}
+
+.toast-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--success);
+}
+
+.toast span {
+  font-size: 11px;
+  font-weight: bold;
+  color: #fff;
+}
+
+@keyframes slideUp {
+  from {
+    bottom: -40px;
+    opacity: 0;
+  }
+  to {
+    bottom: 16px;
+    opacity: 1;
+  }
+}
+
+/* --- Timeline Hover Preview Popup --- */
+.scrub-preview {
+  position: absolute;
+  bottom: 22px; /* Above scrubber */
+  background-color: #252528;
+  border: 1px solid var(--border-dark);
+  padding: 2px;
+  z-index: 100;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 124px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.8);
+}
+
+.scrub-preview canvas {
+  width: 120px;
+  height: 68px;
+  background-color: #000;
+  display: block;
+}
+
+.scrub-preview span {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: #fff;
+  margin-top: 2px;
+}
+
+/* --- Dynamic Keyboard Shortcuts Remapper --- */
+.shortcuts-edit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.shortcut-edit-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 8px;
+  background-color: #2a2a2a;
+  border: 1px solid #1c1c1c;
+  height: 26px;
+}
+
+.shortcut-edit-label {
+  font-size: 10px;
+  color: #ccc;
+  font-weight: bold;
+}
+
+.btn-keybind-record {
+  background: linear-gradient(to bottom, #444, #353535);
+  border: 1px solid #111;
+  border-top-color: #555;
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  padding: 1px 6px;
+  cursor: pointer;
+  min-width: 110px;
+  text-align: center;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-keybind-record:hover {
+  background: #4a4a4a;
+  border-color: #000;
+}
+
+.btn-keybind-record.recording {
+  background: var(--accent-orange);
+  border-color: #000;
+  color: #fff;
+  font-weight: bold;
+  animation: flash-highlight 0.5s infinite alternate;
+}
+
+@keyframes flash-highlight {
+  from { opacity: 0.6; }
+  to { opacity: 1.0; }
+}
+
+/* --- Workspace Switcher Component Styles --- */
+.workspace-switcher {
+  display: flex;
+  background-color: #1e1e1e;
+  border: 1px solid #111;
+  padding: 1px;
+  height: 20px;
+  align-self: center;
+  margin: 0 16px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.ws-tab {
+  background: none;
+  border: none;
+  color: #888;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: bold;
+  padding: 0 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.ws-tab:hover {
+  color: #ccc;
+  background-color: #2a2a2a;
+}
+
+.ws-tab.active {
+  background-color: #38383a;
+  color: var(--accent-orange);
+  border: 1px solid #555;
+  border-top-color: #777;
+  outline: 1px solid #111;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+}
+
+/* --- Main Layout Wrapper --- */
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Split Layout mode: align panels as side-by-side columns (Scenes on LEFT, Playback on RIGHT) */
+.main-layout.layout-split {
+  flex-direction: row !important;
+}
+
+.main-layout.layout-split .overview-panel {
+  width: 320px;
+  height: 100% !important;
+  border-bottom: none !important;
+  border-right: 1px solid var(--border-dark);
+  min-width: 250px;
+  max-width: 600px;
+  flex-shrink: 0;
+}
+
+.main-layout.layout-split .resizer-y {
+  width: 5px !important;
+  height: 100% !important;
+  cursor: col-resize !important;
+  border-left: 1px solid #111;
+  border-right: 1px solid #111;
+  background-image: radial-gradient(circle, #555 1px, transparent 1px);
+  background-size: 4px 4px;
+  background-repeat: repeat-y !important;
+}
+
+/* --- Panel Collapse/Minimize Styles --- */
+.btn-panel-collapse {
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1px;
+  height: 14px;
+  width: 14px;
+}
+
+.btn-panel-collapse:hover {
+  color: #fff;
+  background-color: #333;
+}
+
+.collapse-icon {
+  width: 10px;
+  height: 10px;
+}
+
+/* Stacked mode: collapse vertical height */
+.overview-panel.collapsed {
+  height: 28px !important;
+  min-height: 28px !important;
+  padding-bottom: 0 !important;
+  padding-top: 4px !important;
+}
+
+/* Split mode: collapse horizontal width */
+.main-layout.layout-split .overview-panel.collapsed {
+  width: 28px !important;
+  min-width: 28px !important;
+  padding-left: 4px !important;
+  padding-right: 0 !important;
+}
+
+/* Hide contents when overview panel is collapsed */
+.overview-panel.collapsed .overview-nav,
+.overview-panel.collapsed .overview-content,
+.overview-panel.collapsed .scanner-controls,
+.overview-panel.collapsed .overview-view-options,
+.overview-panel.collapsed h2,
+.overview-panel.collapsed #scanner-status,
+.overview-panel.collapsed .overview-icon {
+  display: none !important;
+}
+
+/* Collapse adjacent frames panel */
+.adjacent-frames-panel.collapsed {
+  height: 24px !important;
+  min-height: 24px !important;
+  padding: 2px 8px !important;
+}
+
+.adjacent-frames-panel.collapsed .frames-strip {
+  display: none !important;
+}
+
+/* --- Scenes Thumbnail Sizing & List View Styles --- */
+.overview-content.thumb-small .scene-card-thumb {
+  width: 80px !important;
+  height: 45px !important;
+}
+.overview-content.thumb-medium .scene-card-thumb {
+  width: 130px !important;
+  height: 73px !important;
+}
+.overview-content.thumb-large .scene-card-thumb {
+  width: 180px !important;
+  height: 101px !important;
+}
+
+/* List view style transforms */
+.scenes-grid.view-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+}
+
+.scenes-grid.view-list .scene-card {
+  flex-direction: row !important;
+  height: auto !important;
+  padding: 4px !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+.scenes-grid.view-list .scene-card-thumb {
+  flex-shrink: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.scenes-grid.view-list .scene-card-info {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex: 1 !important;
+  padding: 0 12px 0 0 !important;
+}
+
+.scenes-grid.view-list .scene-card-title {
+  margin-bottom: 0 !important;
+  font-size: 11px !important;
+}
+
+.scenes-grid.view-list .scene-card-subtext {
+  font-size: 10px !important;
+  color: var(--text-secondary);
+}
+
+/* --- Workspace Layout Overrides --- */
+
+/* Import & Scan Layout */
+body.ws-import #gallery-panel,
+body.ws-import #resizer-x,
+body.ws-import #adjacent-frames-panel {
+  display: none !important;
+}
+
+/* Capture Layout */
+body.ws-capture #gallery-panel,
+body.ws-capture #resizer-x,
+body.ws-capture #scanner-controls {
+  display: none !important;
+}
+
+/* Review Layout */
+body.ws-review #overview-panel,
+body.ws-review #resizer-y,
+body.ws-review #workspace-panel,
+body.ws-review #resizer-x {
+  display: none !important;
+}
+
+body.ws-review #gallery-panel {
+  flex: 1 !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: 100% !important;
+}
+
+body.ws-review .gallery-items {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
+  gap: 12px !important;
+  align-content: start !important;
+}
+
+/* --- Camera Shutter Flash Visual Feedback overlay --- */
+.flash-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: #fff;
+  z-index: 1000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.flash-overlay.active {
+  opacity: 1;
+  transition: none !important;
+}
+
+/* --- Split View Layout Inner Panel Elements --- */
+.overview-split-container {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  gap: 12px;
+}
+
+.scenes-sidebar {
+  width: 150px;
+  flex-shrink: 0;
+  border-right: 1px solid #1a1a1a;
+  padding-right: 8px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.shots-detail-pane {
+  flex: 1;
+  overflow-y: auto;
+  min-width: 0;
+}
+
+/* Sidebar scene items */
+.sidebar-scene-item {
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  background-color: #121212;
+  font-size: 10px;
+  gap: 2px;
+}
+
+.sidebar-scene-item:hover {
+  background-color: #222;
+}
+
+.sidebar-scene-item.active {
+  border-color: var(--accent-orange);
+  background-color: #1a1a1a;
+}
+
+.sidebar-scene-item-thumb {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  border: 1px solid #333;
+}
+
+.sidebar-scene-item-text {
+  font-weight: bold;
+  color: #eee;
+}
+
+.sidebar-scene-item-time {
+  color: var(--text-secondary);
+  font-size: 9px;
+}
+
+/* In COMPACT view mode, hide thumbnails in sidebar scene items */
+.overview-split-container.scenes-compact .sidebar-scene-item-thumb {
+  display: none !important;
+}
+
+.overview-split-container.scenes-compact .sidebar-scene-item {
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 6px !important;
+}
+
+/* --- Layout Responsiveness (Split Sidebar Column) --- */
+.main-layout.layout-split .overview-panel {
+  max-height: none !important; /* Allow panel to fill entire vertical height */
+}
+
+/* Vertically stack elements inside sidebar header for narrow widths */
+.main-layout.layout-split .overview-header {
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 6px !important;
+}
+
+.main-layout.layout-split .overview-title-group {
+  justify-content: space-between !important;
+  width: 100% !important;
+}
+
+.main-layout.layout-split .scanner-controls,
+.main-layout.layout-split .overview-view-options {
+  flex-wrap: wrap !important;
+  justify-content: flex-start !important;
+  gap: 6px !important;
+  width: 100% !important;
+}
+
+.main-layout.layout-split .overview-nav {
+  flex-direction: column !important;
+  align-items: stretch !important;
+  border-bottom: none !important;
+  gap: 2px !important;
+}
+
+.main-layout.layout-split .tab-btn {
+  margin-right: 0 !important;
+  border-bottom: 1px solid #1a1a1a !important;
+  justify-content: flex-start !important;
+  height: 22px !important;
+  padding: 2px 6px !important;
+}
+
+/* Vertically stack layout inner split containers inside narrow sidebar column */
+.main-layout.layout-split .overview-split-container {
+  flex-direction: column !important;
+}
+
+.main-layout.layout-split .scenes-sidebar {
+  width: 100% !important;
+  height: 140px !important; /* height limit to keep list view scrollable on top */
+  border-right: none !important;
+  border-bottom: 1px solid #1a1a1a !important;
+  padding-right: 0 !important;
+  padding-bottom: 8px !important;
+}
+
+.main-layout.layout-split .shots-detail-pane {
+  width: 100% !important;
+  height: calc(100% - 140px) !important;
+}
+
+
+
