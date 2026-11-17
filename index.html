@@ -4,6 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CineSnap - Premium Film Frame Grabber</title>
+  <meta name="description" content="Grab frame-accurate, full-resolution stills from your films in the browser. Scan for scenes and cuts, step frame by frame, export as PNG, JPEG or WebP. Your film never leaves your device.">
+  <meta name="theme-color" content="#242424">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon.ico" sizes="32x32">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta property="og:title" content="CineSnap - Film Frame Grabber">
+  <meta property="og:description" content="Frame-accurate stills from your films, right in the browser. Nothing is uploaded.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://cinesnap-eight.vercel.app/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
   <!-- Google Fonts - Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,7 +24,7 @@
   <!-- JSZip CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <!-- Lucide Icons CDN -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/lucide@1.60.0/dist/umd/lucide.min.js"></script>
 </head>
 <body>
 
@@ -27,23 +38,23 @@
     </div>
     
     <!-- Workspace Switcher (Adobe style layout switch) -->
-    <div class="workspace-switcher" id="workspace-switcher">
-      <button class="ws-tab active" data-ws="import">1. Import & Scan</button>
-      <button class="ws-tab" data-ws="capture">2. Capture Frames</button>
-      <button class="ws-tab" data-ws="review">3. Review & Export</button>
-    </div>
+    <nav class="workspace-switcher" id="workspace-switcher" role="tablist" aria-label="Workflow step">
+      <button class="ws-tab active" data-ws="import" role="tab" aria-selected="true">1. Import<span class="ws-tab-extra"> &amp; Scan</span></button>
+      <button class="ws-tab" data-ws="capture" role="tab" aria-selected="false">2. Capture<span class="ws-tab-extra"> Frames</span></button>
+      <button class="ws-tab" data-ws="review" role="tab" aria-selected="false">3. Review<span class="ws-tab-extra"> &amp; Export</span> <span class="tab-badge hidden" id="review-tab-badge" aria-label="captures">0</span></button>
+    </nav>
 
     <div class="header-actions">
-      <button class="btn btn-secondary" id="btn-toggle-layout" title="Toggle Split Screen / Column Layout">
-        <i data-lucide="columns-2"></i>
+      <button class="btn btn-secondary" id="btn-toggle-layout" title="Toggle Split Screen / Column Layout" aria-label="Toggle split screen layout">
+        <i data-lucide="columns-2" aria-hidden="true"></i>
         <span>Split Screen</span>
       </button>
-      <button class="btn btn-secondary" id="btn-shortcuts" title="Keyboard Shortcuts">
-        <i data-lucide="keyboard"></i>
+      <button class="btn btn-secondary" id="btn-shortcuts" title="Keyboard Shortcuts" aria-label="Keyboard shortcuts">
+        <i data-lucide="keyboard" aria-hidden="true"></i>
         <span>Shortcuts</span>
       </button>
-      <label for="video-input" class="btn btn-primary" id="btn-load-film">
-        <i data-lucide="file-video"></i>
+      <label for="video-input" class="btn btn-primary" id="btn-load-film" tabindex="0" role="button">
+        <i data-lucide="file-video" aria-hidden="true"></i>
         <span>Load Film</span>
       </label>
       <input type="file" id="video-input" accept="video/*" class="hidden-input">
@@ -57,8 +68,8 @@
       <div class="overview-title-group" style="align-items: center;">
         <i data-lucide="layers" class="overview-icon"></i>
         <h2>Film Scene & Shot Overview</h2>
-        <span class="badge badge-outline" id="scanner-status">No film loaded</span>
-        <button class="btn-panel-collapse" id="btn-collapse-overview" title="Collapse/Expand panel" style="margin-left: 8px;">
+        <span class="scan-status" id="scanner-status" role="status">No film loaded</span>
+        <button class="btn-panel-collapse" id="btn-collapse-overview" title="Collapse/Expand panel" aria-label="Collapse or expand the overview panel" style="margin-left: 8px;">
           <i data-lucide="chevron-up" class="collapse-icon"></i>
         </button>
       </div>
@@ -68,18 +79,18 @@
         <div class="control-widget">
           <label for="sensitivity-select" class="widget-label">Detection Threshold</label>
           <select id="sensitivity-select" class="select-input select-sm">
-            <option value="15">High Sensitivity (More cuts)</option>
-            <option value="25" selected>Medium (Standard)</option>
-            <option value="40">Low Sensitivity (Fewer cuts)</option>
+            <option value="12">High Sensitivity (More cuts)</option>
+            <option value="20" selected>Medium (Standard)</option>
+            <option value="35">Low Sensitivity (Fewer cuts)</option>
           </select>
         </div>
         
         <div class="control-widget">
           <label for="scan-mode-select" class="widget-label">Scan Speed</label>
           <select id="scan-mode-select" class="select-input select-sm">
-            <option value="5" selected>Detailed (5s steps)</option>
-            <option value="12">Quick (12s steps)</option>
-            <option value="30">Ultra Quick (30s steps)</option>
+            <option value="1">Thorough (1s steps)</option>
+            <option value="2" selected>Standard (2s steps)</option>
+            <option value="5">Quick (5s steps)</option>
           </select>
         </div>
         
@@ -88,29 +99,33 @@
           <i data-lucide="pause" class="btn-icon-pause hidden"></i>
           <span id="scan-toggle-text">Scan Film</span>
         </button>
+        <button class="btn btn-secondary btn-sm hidden" id="btn-rescan" title="Discard the saved scan and scan the film again">
+          <i data-lucide="rotate-ccw" aria-hidden="true"></i>
+          <span>Rescan</span>
+        </button>
         
         <!-- Background Scan Progress -->
         <div class="scan-progress-wrapper hidden" id="scan-progress-container">
           <div class="progress-track">
             <div class="progress-fill" id="scan-progress-fill" style="width: 0%"></div>
           </div>
-          <span class="scan-percent" id="scan-percent-text">0%</span>
+          <span class="scan-percent" id="scan-percent-text" aria-live="off">0%</span>
         </div>
       </div>
       
       <!-- Scenes Panel View Controls -->
       <div class="overview-view-options hidden" id="overview-view-options" style="display:flex; gap:8px; align-items:center;">
         <div class="control-widget" style="margin: 0; display:flex; align-items:center; gap:6px;">
-          <label for="scene-thumb-size" class="widget-label" style="margin: 0; font-size: 9px; color:#888;">Size</label>
-          <select id="scene-thumb-size" class="select-input select-sm" style="width:70px; height:18px; font-size:9px; padding:0 2px; background-color:#121212; border:1px solid #000;">
+          <label for="scene-thumb-size" class="widget-label" style="margin: 0; font-size: 10px; color:#a8a8a8;">Size</label>
+          <select id="scene-thumb-size" class="select-input select-sm" style="width:70px; height:18px; font-size: 10px; padding:0 2px; background-color:#121212; border:1px solid #000;">
             <option value="small">Small</option>
             <option value="medium" selected>Medium</option>
             <option value="large">Large</option>
           </select>
         </div>
         <div class="control-widget" style="margin: 0; display:flex; align-items:center; gap:6px;">
-          <label for="scene-view-mode" class="widget-label" style="margin: 0; font-size: 9px; color:#888;">Layout</label>
-          <select id="scene-view-mode" class="select-input select-sm" style="width:75px; height:18px; font-size:9px; padding:0 2px; background-color:#121212; border:1px solid #000;">
+          <label for="scene-view-mode" class="widget-label" style="margin: 0; font-size: 10px; color:#a8a8a8;">Layout</label>
+          <select id="scene-view-mode" class="select-input select-sm" style="width:75px; height:18px; font-size: 10px; padding:0 2px; background-color:#121212; border:1px solid #000;">
             <option value="grid" selected>Normal</option>
             <option value="list">Compact</option>
           </select>
@@ -156,6 +171,27 @@
         <div class="video-container hidden" id="video-container">
           <!-- Main Active Video -->
           <video id="main-video" playsinline></video>
+
+          <!-- Unsupported file message -->
+          <div class="video-error hidden" id="video-error" role="alert">
+            <i data-lucide="triangle-alert" class="video-error-icon" aria-hidden="true"></i>
+            <h2>This film can't be played</h2>
+            <p id="video-error-message"></p>
+            <p>Your browser plays MP4 (H.264), WebM and M4V. To convert an MKV or similar file without losing quality, run:</p>
+            <div class="remux-hint">
+              <code>ffmpeg -i input.mkv -c copy output.mp4</code>
+              <button class="btn-copy" id="btn-copy-ffmpeg-error" title="Copy command" aria-label="Copy ffmpeg command">
+                <i data-lucide="copy" class="copy-icon" aria-hidden="true"></i>
+              </button>
+            </div>
+            <p class="video-error-sub">If the video itself is HEVC/H.265, re-encode it instead: <code>ffmpeg -i input.mkv -c:v libx264 -crf 16 -c:a copy output.mp4</code></p>
+          </div>
+
+          <!-- Capture tray: confirms each grab while the gallery is hidden -->
+          <div class="capture-tray hidden" id="capture-tray" role="status">
+            <img id="capture-tray-img" alt="">
+            <span id="capture-tray-count">1 captured</span>
+          </div>
           
           <!-- Zoom Overlay (used to show a magnifying indicator or pan visual) -->
           <div class="zoom-indicator hidden" id="zoom-hud">
@@ -175,13 +211,18 @@
           <i data-lucide="video" class="placeholder-icon"></i>
           <h2>Drop your film here</h2>
           <p>or click <strong>Load Film</strong> in the top right to browse</p>
+          <button class="btn btn-primary hidden" id="btn-reopen-film" type="button">
+            <i data-lucide="history" aria-hidden="true"></i>
+            <span>Reopen last film</span>
+          </button>
+          <p class="privacy-note"><i data-lucide="shield-check" aria-hidden="true"></i> Your film never leaves your device. Everything runs in your browser.</p>
           <div class="compatibility-info">
             <span>Supports MP4, WebM, M4V.</span>
             <div class="remux-hint">
               <span>Watching an MKV or AVI? Convert it in 1 second with no quality loss:</span>
               <code>ffmpeg -i input.mkv -c copy output.mp4</code>
-              <button class="btn-copy" id="btn-copy-ffmpeg" title="Copy command">
-                <i data-lucide="copy" class="copy-icon"></i>
+              <button class="btn-copy" id="btn-copy-ffmpeg" title="Copy command" aria-label="Copy ffmpeg command">
+                <i data-lucide="copy" class="copy-icon" aria-hidden="true"></i>
               </button>
             </div>
           </div>
@@ -196,7 +237,7 @@
         <div class="scrubber-container">
           <span class="time-display" id="time-current">00:00:00.00</span>
           <div class="slider-wrapper">
-            <input type="range" id="video-scrubber" min="0" max="100" step="0.001" value="0">
+            <input type="range" id="video-scrubber" min="0" max="100" step="0.001" value="0" aria-label="Timeline position">
             <div class="progress-bar-fill" id="progress-bar-fill"></div>
             <!-- Timeline Hover Preview -->
             <div class="scrub-preview hidden" id="scrub-preview">
@@ -205,6 +246,7 @@
             </div>
           </div>
           <span class="time-display" id="time-duration">00:00:00.00</span>
+          <span class="fps-label" id="frame-rate-label"></span>
         </div>
 
         <!-- Buttons Row -->
@@ -238,43 +280,43 @@
           <!-- Center side: Playback & Frame stepping -->
           <div class="controls-group main-playback-controls">
             <!-- Jump Backwards -->
-            <button class="control-btn" id="btn-jump-back-10" title="Jump back 10s (Cmd/Ctrl + Left)">
+            <button class="control-btn" id="btn-jump-back-10" title="Jump back 10s (Cmd/Ctrl + Left)" aria-label="Jump back 10s (Cmd/Ctrl + Left)">
               <i data-lucide="chevrons-left"></i>
               <span class="btn-subtext">10s</span>
             </button>
-            <button class="control-btn" id="btn-step-back-1s" title="Jump back 1s (Alt/Opt + Left)">
+            <button class="control-btn" id="btn-step-back-1s" title="Jump back 1s (Alt/Opt + Left)" aria-label="Jump back 1s (Alt/Opt + Left)">
               <i data-lucide="chevron-left"></i>
               <span class="btn-subtext">1s</span>
             </button>
-            <button class="control-btn" id="btn-step-back-10f" title="Step back 10 frames (Shift + Left)">
+            <button class="control-btn" id="btn-step-back-10f" title="Step back 10 frames (Shift + Left)" aria-label="Step back 10 frames (Shift + Left)">
               <i data-lucide="skip-back"></i>
               <span class="btn-subtext">10f</span>
             </button>
-            <button class="control-btn" id="btn-step-back-1f" title="Step back 1 frame (Left Arrow)">
+            <button class="control-btn" id="btn-step-back-1f" title="Step back 1 frame (Left Arrow)" aria-label="Step back 1 frame (Left Arrow)">
               <i data-lucide="arrow-left-to-line"></i>
               <span class="btn-subtext">1f</span>
             </button>
 
             <!-- Play / Pause -->
-            <button class="control-btn play-pause-btn" id="btn-play-pause" title="Play/Pause (Space / K)">
+            <button class="control-btn play-pause-btn" id="btn-play-pause" title="Play/Pause (Space / K)" aria-label="Play/Pause (Space / K)">
               <i data-lucide="play" id="play-icon"></i>
               <i data-lucide="pause" id="pause-icon" class="hidden"></i>
             </button>
 
             <!-- Step Forwards -->
-            <button class="control-btn" id="btn-step-forward-1f" title="Step forward 1 frame (Right Arrow)">
+            <button class="control-btn" id="btn-step-forward-1f" title="Step forward 1 frame (Right Arrow)" aria-label="Step forward 1 frame (Right Arrow)">
               <i data-lucide="arrow-right-to-line"></i>
               <span class="btn-subtext">1f</span>
             </button>
-            <button class="control-btn" id="btn-step-forward-10f" title="Step forward 10 frames (Shift + Right)">
+            <button class="control-btn" id="btn-step-forward-10f" title="Step forward 10 frames (Shift + Right)" aria-label="Step forward 10 frames (Shift + Right)">
               <i data-lucide="skip-forward"></i>
               <span class="btn-subtext">10f</span>
             </button>
-            <button class="control-btn" id="btn-step-forward-1s" title="Jump forward 1s (Alt/Opt + Right)">
+            <button class="control-btn" id="btn-step-forward-1s" title="Jump forward 1s (Alt/Opt + Right)" aria-label="Jump forward 1s (Alt/Opt + Right)">
               <i data-lucide="chevron-right"></i>
               <span class="btn-subtext">1s</span>
             </button>
-            <button class="control-btn" id="btn-jump-forward-10" title="Jump forward 10s (Cmd/Ctrl + Right)">
+            <button class="control-btn" id="btn-jump-forward-10" title="Jump forward 10s (Cmd/Ctrl + Right)" aria-label="Jump forward 10s (Cmd/Ctrl + Right)">
               <i data-lucide="chevrons-right"></i>
               <span class="btn-subtext">10s</span>
             </button>
@@ -282,8 +324,11 @@
 
           <!-- Right side: Capture! -->
           <div class="controls-group">
+            <button class="btn btn-secondary btn-icon" id="btn-toggle-sound" type="button" title="Shutter sound" aria-label="Shutter sound">
+              <i data-lucide="volume-2" aria-hidden="true"></i>
+            </button>
             <button class="btn btn-capture" id="btn-capture" title="Take Full-Resolution Screenshot (S / Enter)">
-              <i data-lucide="aperture"></i>
+              <i data-lucide="aperture" aria-hidden="true"></i>
               <span>Grab Frame</span>
             </button>
           </div>
@@ -296,7 +341,7 @@
       <div class="adjacent-frames-panel hidden" id="adjacent-frames-panel">
         <div class="panel-header" style="display:flex; justify-content:space-between; align-items:center; width:100%; border-bottom:1px solid #1a1a1a; padding-bottom:4px; margin-bottom:6px;">
           <div style="display:flex; align-items:center; gap:8px;">
-            <button class="btn-panel-collapse" id="btn-collapse-adjacent" title="Collapse/Expand panel">
+            <button class="btn-panel-collapse" id="btn-collapse-adjacent" title="Collapse/Expand panel" aria-label="Collapse or expand the adjacent frames panel">
               <i data-lucide="chevron-up" class="collapse-icon"></i>
             </button>
             <div style="display:flex; flex-direction:column;">
@@ -305,8 +350,8 @@
             </div>
           </div>
           <div class="control-widget" style="margin: 0; display:flex; align-items:center; gap:6px;">
-            <label for="adjacent-step-select" class="widget-label" style="margin: 0; font-size: 9px; color:#888;">Step Size</label>
-            <select id="adjacent-step-select" class="select-input select-sm" style="width:75px; height:18px; font-size:9px; padding:0 2px; background-color:#121212; border:1px solid #000;">
+            <label for="adjacent-step-select" class="widget-label" style="margin: 0; font-size: 10px; color:#a8a8a8;">Step Size</label>
+            <select id="adjacent-step-select" class="select-input select-sm" style="width:75px; height:18px; font-size: 10px; padding:0 2px; background-color:#121212; border:1px solid #000;">
               <option value="1f" selected>1 Frame</option>
               <option value="10f">10 Frames</option>
               <option value="1s">1 Second</option>
@@ -334,8 +379,25 @@
           <span class="badge" id="gallery-count">0</span>
         </div>
         <button class="btn btn-success btn-sm disabled" id="btn-download-all" title="Zip and Download All Captures">
-          <i data-lucide="archive-restore"></i>
+          <i data-lucide="archive-restore" aria-hidden="true"></i>
           <span>Download All</span>
+        </button>
+      </div>
+      <div class="gallery-toolbar">
+        <label class="widget-label" for="gallery-scope">Show</label>
+        <select id="gallery-scope" class="select-input select-sm">
+          <option value="film" selected>This film</option>
+          <option value="all">All films</option>
+        </select>
+        <label class="widget-label" for="export-format">Format</label>
+        <select id="export-format" class="select-input select-sm">
+          <option value="png" selected>PNG</option>
+          <option value="jpeg">JPEG</option>
+          <option value="webp">WebP</option>
+        </select>
+        <button class="btn btn-danger btn-sm disabled" id="btn-clear-gallery" type="button" title="Delete every capture shown">
+          <i data-lucide="trash-2" aria-hidden="true"></i>
+          <span>Clear All</span>
         </button>
       </div>
 
@@ -360,13 +422,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <h2>CineSnap Keyboard Shortcuts</h2>
-        <button class="modal-close" id="btn-close-shortcuts">&times;</button>
+        <button class="modal-close" id="btn-close-shortcuts" aria-label="Close">&times;</button>
       </div>
       <div class="modal-body">
         <div class="shortcuts-instructions" style="margin-bottom:12px; font-size:10px; color:var(--text-secondary); border-bottom:1px solid #202020; padding-bottom:6px; line-height:1.4;">
           Click on any keycap button below and press a new key combination to remap.<br>
           <strong>Workspace Quick-Keys</strong>: Press <kbd>1</kbd> for Import & Scan, <kbd>2</kbd> for Capture Frames, and <kbd>3</kbd> for Review & Export.
         </div>
+        <p class="shortcuts-notice" id="shortcuts-notice" role="status"></p>
         <div class="shortcuts-edit-list" id="shortcuts-binding-list">
           <!-- Dynamically populated from JS -->
         </div>
@@ -378,10 +441,32 @@
     </div>
   </dialog>
 
-  <!-- Copy Notification Toast -->
-  <div class="toast hidden" id="copy-toast">
-    <i data-lucide="check-circle" class="toast-icon"></i>
-    <span>Ffmpeg command copied to clipboard!</span>
+  <!-- Large preview (Review) -->
+  <dialog class="modal-dialog lightbox-dialog" id="lightbox-dialog" aria-label="Capture preview">
+    <button class="modal-close lightbox-close" data-close aria-label="Close preview">&times;</button>
+    <img id="lightbox-img" alt="">
+    <p class="lightbox-caption" id="lightbox-caption"></p>
+  </dialog>
+
+  <!-- In-app confirm -->
+  <dialog class="modal-dialog confirm-dialog" id="confirm-dialog" aria-labelledby="confirm-message">
+    <div class="modal-content">
+      <div class="modal-body"><p id="confirm-message"></p></div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary btn-sm" id="confirm-cancel" type="button">Cancel</button>
+        <button class="btn btn-danger btn-sm" id="confirm-ok" type="button">OK</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Drop anywhere overlay -->
+  <div class="drop-overlay" aria-hidden="true"><span>Drop film to load</span></div>
+
+  <!-- Notification Toast -->
+  <div class="toast hidden" id="copy-toast" role="status">
+    <i data-lucide="circle-check" class="toast-icon" aria-hidden="true"></i>
+    <span id="toast-text"></span>
+    <button class="toast-action hidden" id="toast-action" type="button">Undo</button>
   </div>
 
   <!-- Main JavaScript App -->
